@@ -5,7 +5,11 @@ const signInUser = async (form) => {
         if (!form.email || !form.password)
             throw new Error(alert("Please enter a valid email and password!"));
         const userData = await axios.get(
-            `http://localhost:24601/users?email=${form.email}&password=${form.password}`
+            `${
+                import.meta.env.DEV
+                    ? import.meta.env.VITE_BACKEND_URL_DEV
+                    : import.meta.env.VITE_BACKEND_URL_DEPLOY
+            }/users?email=${form.email}&password=${form.password}`
         );
         console.log(userData.data);
         return userData.data;
@@ -16,13 +20,21 @@ const signInUser = async (form) => {
 
 const makeNewUser = (newUser) => {
     axios
-        .post("http://localhost:24601/users", {
-            first_name: newUser.firstName,
-            last_name: newUser.lastName,
-            email: newUser.email,
-            password: newUser.password,
-            profile_pic: newUser.profilePic,
-        })
+        // `${import.meta.env.DEV ? VITE_BACKEND_URL_DEV : VITE_BACKEND_URL_DEPLOY}`,
+        .post(
+            `${
+                import.meta.env.DEV
+                    ? import.meta.env.VITE_BACKEND_URL_DEV
+                    : import.meta.env.VITE_BACKEND_URL_DEPLOY
+            }/users`,
+            {
+                first_name: newUser.firstName,
+                last_name: newUser.lastName,
+                email: newUser.email,
+                password: newUser.password,
+                profile_pic: newUser.profilePic,
+            }
+        )
         .then(function (response) {
             console.log(response);
         })
@@ -34,7 +46,11 @@ const makeNewUser = (newUser) => {
 const editUser = async (userId, userInfo) => {
     try {
         const userData = await axios.patch(
-            `http://localhost:24601/users/${userId}`,
+            `${
+                import.meta.env.DEV
+                    ? import.meta.env.VITE_BACKEND_URL_DEV
+                    : import.meta.env.VITE_BACKEND_URL_DEPLOY
+            }/users/${userId}`,
             {
                 first_name: userInfo.firstName,
                 last_name: userInfo.lastName,
@@ -51,7 +67,13 @@ const editUser = async (userId, userInfo) => {
 
 const addToWishlist = (userId, albumId) => {
     axios
-        .post(`http://localhost:24601/wishlist/${userId}/${albumId}`)
+        .post(
+            `${
+                import.meta.env.DEV
+                    ? import.meta.env.VITE_BACKEND_URL_DEV
+                    : import.meta.env.VITE_BACKEND_URL_DEPLOY
+            }/wishlist/${userId}/${albumId}`
+        )
         .then(function (response) {
             console.log(response);
         })
@@ -62,7 +84,13 @@ const addToWishlist = (userId, albumId) => {
 
 const removeFromWishlist = (userId, albumId) => {
     axios
-        .delete(`http://localhost:24601/wishlist/${userId}/${albumId}`)
+        .delete(
+            `${
+                import.meta.env.DEV
+                    ? import.meta.env.VITE_BACKEND_URL_DEV
+                    : import.meta.env.VITE_BACKEND_URL_DEPLOY
+            }/wishlist/${userId}/${albumId}`
+        )
         .then(function (response) {
             console.log(response);
         })

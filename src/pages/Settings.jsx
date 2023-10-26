@@ -28,7 +28,25 @@ const Settings = () => {
                 console.log(userData);
                 if (!userData)
                     return alert("Sorry, an error occurred while updating");
-                userData && setUser([userData]);
+                userData &&
+                    setUser((prev) => {
+                        const {
+                            first_name,
+                            last_name,
+                            email,
+                            password,
+                            profile_pic,
+                        } = userData;
+                        const updatedUser = prev.map((user) => ({
+                            ...user,
+                            first_name: first_name,
+                            last_name: last_name,
+                            email: email,
+                            password: password,
+                            profile_pic: profile_pic,
+                        }));
+                        return updatedUser;
+                    });
                 return alert("Profile successfully updated :)");
             })
             .catch((error) => console.error(error));
